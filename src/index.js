@@ -124,7 +124,7 @@ function addIntern() {
     })
 }
 function addEngineer() {
-    console.log('------- AddN ew Engineer----------');
+    console.log('------- Add New Engineer----------');
     inquirer.prompt([
         {
             type: 'input',
