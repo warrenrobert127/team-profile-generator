@@ -1,174 +1,248 @@
-const Engineer = require('../lib/Engineer');
-const Intern = require('../lib/Intern');
-const Manager = require('../lib/Manager');
-const inquirer = require('inquirer');
-const fs = require('fs');
-const { callbackify } = require('util');
-var html = 'string'
+//required NPM modules
+const inquirer = require("inquirer");
+const fs = require("fs");
+
+const Engineer = require("../lib/Engineer");
+const Intern = require("../lib/Intern");
+const Manager = require("../lib/Manager");
+const inquirer = require("inquirer");
+const generateHTML = require("./src/generateHTML");
+
+const { callbackify } = require("util");
+var html = "string";
+
+//Array to hold team
+const teamArr = [];
+
+const promptManager = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Enter the managers name (Required)",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the manager's name!");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "employeeID",
+        message: "Enter the manager's ID number",
+        validate: (nameInput) => {
+          if (isNaN(nameInput)) {
+            console.log("Please enter the manager's ID!");
+            return false;
+          } else {
+            return true;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Please enter the managers email address.",
+        validate: (emailInput) => {
+          if (emailInput) {
+            return true;
+          } else {
+            console.log("Please enter the managers email address!");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Enter your office number (Required)",
+        validate: (officeNumberInput) => {
+          if (officeNumberInput) {
+            return true;
+          } else {
+            console.log("Please enter your office number!");
+            return false;
+          }
+        },
+      },
+    ])
+    .then((managerInput) => {
+      const { name, employeeID, email, officeNumber } = managerInput;
+      const manager = new Manager(name, employeeID, email, officeNumber);
+
+      teamArr.push(manager);
+      console.log(manager);
+    });
+};
 
 function addEmployee() {
-    inquirer.prompt([
-        {
-            type: 'list',
-            message: 'add employee?',
-            name: 'userOption',
-            choices: ['addManager', 'addIntern', 'addEngineer', 'exitApplication']
-        }
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "add employee?",
+        name: "userOption",
+        choices: ["addManager", "addIntern", "addEngineer", "exitApplication"],
+      },
     ])
-        .then(function (response) {
-            switch (response.userOption) {
-                case 'addManager':
-                    addManager()
-                    break;
-                case 'addIntern':
-                    addIntern()
-                    break;
-                case 'addEngineer':
-                    addEngineer()
-                    break;
-                case 'exitApplication':
-                    exitApplication()
-                    break;
-
-
-            }
-        })
+    .then(function (response) {
+      switch (response.userOption) {
+        case "addManager":
+          addManager();
+          break;
+        case "addIntern":
+          addIntern();
+          break;
+        case "addEngineer":
+          addEngineer();
+          break;
+        case "exitApplication":
+          exitApplication();
+          break;
+      }
+    });
 }
 
 function addManager() {
-    console.log('addNewManager');
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'enter employee name'
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: 'enter employee id'
-        },
-        {
-            type: 'input',
-           name: 'email',
-           message: 'enter employee email'
-        },
-        {
-            type: 'input',
-           name: 'officeNumber',
-           message: 'enter Manager office number'
-        }
+  console.log("addNewManager");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "enter employee name",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "enter employee id",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "enter employee email",
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "enter Manager office number",
+      },
     ])
-    .then(function({
-        name, id, email, officeNumber
-    }){
-         var newEmployee = new Manager(id, name, email, officeNumber)
-         html += `<div class="card" style="width: 18rem;">
+    .then(function ({ name, id, email, officeNumber }) {
+      var newEmployee = new Manager(id, name, email, officeNumber);
+      html += `<div class="card" style="width: 18rem;">
          <div class="card-body">
            <h5 class="card-title">${newEmployee.name}</h5>
            <h6 class="card-subtitle mb-2 text-muted">${newEmployee.getRole()}</h6>
            <p class="card-text">office number:${newEmployee.officeNumber}</p>
-           <a href="mailto:${newEmployee.email}" class="card-link">email:${newEmployee.email}</a>
+           <a href="mailto:${newEmployee.email}" class="card-link">email:${
+        newEmployee.email
+      }</a>
            <p class="card-text">id:${newEmployee.id}</p>
            <a href="#" class="card-link">Another link</a>
          </div>
        </div>
-         `
-         console.log(html);
-         addEmployee() 
-         
-    })
+         `;
+      console.log(html);
+      addEmployee();
+    });
 }
 function addIntern() {
-    console.log('addNewIntern');
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'enter employee name'
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: 'enter employee id'
-        },
-        {
-            type: 'input',
-           name: 'email',
-           message: 'enter employee email'
-        },
-        {
-            type: 'input',
-           name: 'schoolName',
-           message: 'enter Manager office number'
-        }
+  console.log("addNewIntern");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "enter employee name",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "enter employee id",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "enter employee email",
+      },
+      {
+        type: "input",
+        name: "schoolName",
+        message: "enter Manager office number",
+      },
     ])
-    .then(function({
-        name, id, email, schoolName
-    }){
-         var newEmployee = new Intern(id, name, email, schoolName)
-         html += `<div class="card" style="width: 18rem;">
+    .then(function ({ name, id, email, schoolName }) {
+      var newEmployee = new Intern(id, name, email, schoolName);
+      html += `<div class="card" style="width: 18rem;">
          <div class="card-body">
            <h5 class="card-title">${newEmployee.name}</h5>
            <h6 class="card-subtitle mb-2 text-muted">${newEmployee.getRole()}</h6>
            <p class="card-text">school name:${newEmployee.schoolName}</p>
-           <a href="mailto:${newEmployee.email}" class="card-link">email:${newEmployee.schoolName}</a>
+           <a href="mailto:${newEmployee.email}" class="card-link">email:${
+        newEmployee.schoolName
+      }</a>
            <p class="card-text">id:${newEmployee.id}</p>
-           <a href="https://github.com/${newEmployee.github}" class="card-link">github</a>
+           <a href="https://github.com/${
+             newEmployee.github
+           }" class="card-link">github</a>
          </div>
        </div>
-         `
-         console.log(html);
-         addEmployee() 
-         
-    })
+         `;
+      console.log(html);
+      addEmployee();
+    });
 }
 function addEngineer() {
-    console.log('------- AddN ew Engineer----------');
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'enter employee name'
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: 'enter employee id'
-        },
-        {
-            type: 'input',
-           name: 'email',
-           message: 'enter employee email'
-        },
-        {
-            type: 'input',
-           name: 'github ',
-           message: 'enter github username'
-        }
+  console.log("------- AddN ew Engineer----------");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "enter employee name",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "enter employee id",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "enter employee email",
+      },
+      {
+        type: "input",
+        name: "github ",
+        message: "enter github username",
+      },
     ])
-    .then(function({
-        name, id, email, github
-    }){
-         var newEmployee = new Engineer(id, name, email, github)
-         html += `<div class="card" style="width: 18rem;">
+    .then(function ({ name, id, email, github }) {
+      var newEmployee = new Engineer(id, name, email, github);
+      html += `<div class="card" style="width: 18rem;">
          <div class="card-body">
            <h5 class="card-title">${newEmployee.name}</h5>
            <h6 class="card-subtitle mb-2 text-muted">${newEmployee.getRole()}</h6>
            <p class="card-text">office number:${newEmployee.github}</p>
-           <a href="mailto:${newEmployee.email}" class="card-link">email:${newEmployee.email}</a>
+           <a href="mailto:${newEmployee.email}" class="card-link">email:${
+        newEmployee.email
+      }</a>
            <p class="card-text">id:${newEmployee.id}</p>
            <a href="#" class="card-link">Another link</a>
          </div>
        </div>
-         `
-         console.log(html);
-         addEmployee() 
-         
-    })
+         `;
+      console.log(html);
+      addEmployee();
+    });
 }
 function exitApplication() {
-    var exitHtml = `<!doctype html>
+  var exitHtml = `<!doctype html>
     <html lang="en">
       <head>
         <!-- Required meta tags -->
@@ -198,10 +272,12 @@ function exitApplication() {
         -->
       </body>
     </html>
-    `
-    fs.writeFileSync('index.html', exitHtml, function(error){
-        if(error) throw error 
-    })
-    console.log('application is working')
+    `;
+  fs.writeFileSync("index.html", exitHtml, function (error) {
+    if (error) throw error;
+  });
+  console.log("application is working");
 }
-addEmployee()
+
+promptManager();
+addEmployee();
