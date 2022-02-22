@@ -6,7 +6,6 @@ const generateManager = function (manager) {
     ${manager.name}</p>
     <p class="has-text-centered is-size-4">Manager</p>
     </header>
-
     <div class="card-content">
       <div class="content">
         <p class="id">ID: ${manager.id}</p>
@@ -20,14 +19,13 @@ const generateManager = function (manager) {
 
 //Create Engineer card
 const generateEngineer = function (engineer) {
-    return `
+  return `
     <div class="card m-auto">
     <header class="card-header-title-is-centered">
     <p class="has-text-centered is-size-3">
     ${engineer.name}</p>
     <p class="has-text-centered is-size-4">Engineer</p>
     </header>
-
     <div class="card-content">
       <div class="content">
         <p class="id">ID: ${engineer.id}</p>
@@ -37,10 +35,10 @@ const generateEngineer = function (engineer) {
     </div>
   </div>
     `;
-}
+};
 //Create intern card
 const generateIntern = function (intern) {
-    return `
+  return `
  
     <div class="card m-auto">
     <header class="card-header-title-is-centered">
@@ -48,7 +46,6 @@ const generateIntern = function (intern) {
     ${intern.name}</p>
     <p class="has-text-centered is-size-4">Intern</p>
     </header>
-
     <div class="card-content">
       <div class="content">
         <p class="id">ID: ${intern.id}</p>
@@ -57,10 +54,10 @@ const generateIntern = function (intern) {
       </div>
     </div>
   </div>
-
     `;
-}
-//Push array to page 
+};
+
+//Push array to page
 generateHTML = (data) => {
   //Array for cards
   pageArray = [];
@@ -90,6 +87,7 @@ generateHTML = (data) => {
       pageArray.push(internCard);
     }
   }
+
   //Joining strings
   const employeeCards = pageArray.join("");
   //Return to generated page
@@ -110,14 +108,14 @@ const generateTeamPage = function (employeeCards) {
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <header class="has-text-centered">
-            <nav >
-                <span class="has-text-centered" id="navbar-text">Team Profile</span>
+        <header class="has-text-centered m-auto">
+          <nav class =' is-centered is-vcentered is-mobile'>
+                <span class="is-size-1 has-text-centered has-text-weight-bold">Team Profile</span>
             </nav>
         </header>
         <main>
             <div class="column">
-                <div class="row justify-content-center" id="team-cards">
+                <div class="row justify-content-center columns" id="team-cards">
                     <!--Team Cards-->
                     ${employeeCards}
                 </div>
@@ -130,6 +128,5 @@ const generateTeamPage = function (employeeCards) {
   `;
 };
 
-
 // export to index
-  module.exports = generateHTML; 
+module.exports = generateHTML;
