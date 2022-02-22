@@ -326,8 +326,6 @@ function exitApplication() {
   console.log("application is working");
 }
 
-promptManager();
-addEmployee();
 =======
 promptManager();
 >>>>>>> develop
