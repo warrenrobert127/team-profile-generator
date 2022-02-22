@@ -15,6 +15,7 @@
 
   ## Installation 
   To clone the repo:
+  ![video](https://user-images.githubusercontent.com/20363030/155085200-b0016812-e497-4e32-8a7a-cedcb29e8735.mp4)
   ## Usage 
   git clone https://github.com/warrenrobert127/team-profile-generator
   ## License
