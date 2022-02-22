@@ -1,6 +1,17 @@
 //required NPM modules
 const inquirer = require("inquirer");
 
+const fs = require("fs");
+
+//required local modules
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const generateHTML = require("./src/generateHTML");
+
+//Array to hold team
+const teamArr = [];
+
 const promptManager = () => {
   return inquirer
     .prompt([
@@ -63,7 +74,7 @@ const promptManager = () => {
 
       teamArr.push(manager);
       console.log(manager);
-    });
+    })
 };
 
 const addEmployee = () => {
@@ -197,62 +208,15 @@ const writeFile = (data) => {
   });
 };
 
-//remove promptEngineer
-/*const promptEngineer = () => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "name",
-      message: "Enter your name (Required)",
-      validate: (githubInput) => {
-        if (githubInput) {
-          return true;
-        } else {
-          console.log("Please enter your name!");
-          return false;
-        }
-      },
-    },
-    {
-      type: "input",
-      name: "employeeID",
-      message: "Enter your employee ID (Required)",
-      validate: (employeeIDInput) => {
-        if (employeeIDInput) {
-          return true;
-        } else {
-          console.log("Please enter your employee ID!");
-          return false;
-        }
-      },
-    },
-    {
-      type: "input",
-      name: "email",
-      message: "Enter your email address (Required)",
-      validate: (emailInput) => {
-        if (emailInput) {
-          return true;
-        } else {
-          console.log("Please enter your email address!");
-          return false;
-        }
-      },
-    },
-    {
-      type: "input",
-      name: "github",
-      message: "Enter your GitHub Username (Required)",
-      validate: (githubInput) => {
-        if (githubInput) {
-          return true;
-        } else {
-          console.log("Please enter your GitHub username!");
-          return false;
-        }
-      },
-    },
-  ]);
-};
- */
-promptManager();
+
+promptManager()
+  .then(addEmployee)
+  .then((teamArr) => {
+    return generateHTML(teamArr);
+  })
+  .then((pageHTML) => {
+    return writeFile(pageHTML);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
