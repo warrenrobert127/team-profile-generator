@@ -2,60 +2,68 @@
 const inquirer = require("inquirer");
 
 const promptManager = () => {
-  return inquirer.prompt([
-    {
-      type: "input",
-      name: "name",
-      message: "Enter your name (Required)",
-      validate: (githubInput) => {
-        if (githubInput) {
-          return true;
-        } else {
-          console.log("Please enter your name!");
-          return false;
-        }
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Enter the managers name (Required)",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the manager's name!");
+            return false;
+          }
+        },
       },
-    },
-    {
-      type: "input",
-      name: "employeeID",
-      message: "Enter your employee ID (Required)",
-      validate: (employeeIDInput) => {
-        if (employeeIDInput) {
-          return true;
-        } else {
-          console.log("Please enter your employee ID!");
-          return false;
-        }
+      {
+        type: "input",
+        name: "employeeID",
+        message: "Enter the manager's ID number",
+        validate: (nameInput) => {
+          if (isNaN(nameInput)) {
+            console.log("Please enter the manager's ID!");
+            return false;
+          } else {
+            return true;
+          }
+        },
       },
-    },
-    {
-      type: "input",
-      name: "email",
-      message: "Enter your email address (Required)",
-      validate: (emailInput) => {
-        if (emailInput) {
-          return true;
-        } else {
-          console.log("Please enter your email address!");
-          return false;
-        }
+      {
+        type: "input",
+        name: "email",
+        message: "Please enter the managers email address.",
+        validate: (emailInput) => {
+          if (emailInput) {
+            return true;
+          } else {
+            console.log("Please enter the managers email address!");
+            return false;
+          }
+        },
       },
-    },
-    {
-      type: "input",
-      name: "officeNumber",
-      message: "Enter your office number (Required)",
-      validate: (officeNumberInput) => {
-        if (officeNumberInput) {
-          return true;
-        } else {
-          console.log("Please enter your office number!");
-          return false;
-        }
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Enter your office number (Required)",
+        validate: (officeNumberInput) => {
+          if (officeNumberInput) {
+            return true;
+          } else {
+            console.log("Please enter your office number!");
+            return false;
+          }
+        },
       },
-    },
-  ]);
+    ])
+    .then((managerInput) => {
+      const { name, employeeID, email, officeNumber } = managerInput;
+      const manager = new Manager(name, employeeID, email, officeNumber);
+
+      teamArr.push(manager);
+      console.log(manager);
+    });
 };
 
 const promptEngineer = () => {
